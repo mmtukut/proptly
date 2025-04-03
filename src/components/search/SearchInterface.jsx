@@ -153,51 +153,295 @@ const SearchInterface = ({
     setSavedSearches(prev => [...prev, newSavedSearch]);
   };
 
-  // Enhanced search handler with relevance scoring
-  const handleSearch = () => {
-    const searchData = {
-      query: searchQuery,
-      filters,
-      timestamp: new Date().toISOString()
-    };
-
-    // Add to recent searches
-    addToRecentSearches(searchQuery, filters);
-
-    // Calculate relevance score based on filters
-    const relevanceScore = calculateRelevanceScore(searchData);
-
-    // Pass search data to parent with relevance score
-    onSearch({ ...searchData, relevanceScore });
-  };
-
-  // Relevance score calculation
+  // Relevance score calculation with null checks
   const calculateRelevanceScore = (searchData) => {
     let score = 0;
     
+    // Ensure searchData and its properties exist
+    if (!searchData) return score;
+    
     // Query length weight
-    if (searchData.query.length > 3) score += 10;
+    if (searchData.query && searchData.query.length > 3) {
+      score += 10;
+    }
     
     // Filter completeness weight
-    const filledFilters = Object.entries(searchData.filters).filter(([_, value]) => {
-      if (Array.isArray(value)) return value.length > 0;
-      if (typeof value === 'object') return Object.values(value).some(v => v !== '');
-      return value !== '' && value !== false;
-    });
-    
-    score += filledFilters.length * 5;
+    if (searchData.filters) {
+      const filledFilters = Object.entries(searchData.filters).filter(([key, value]) => {
+        if (!value) return false;
+        if (Array.isArray(value)) return value.length > 0;
+        if (typeof value === 'object') {
+          return value && Object.values(value).some(v => v !== '' && v !== null && v !== undefined);
+        }
+        return value !== '' && value !== false;
+      });
+      
+      score += filledFilters.length * 5;
+    }
     
     // Price range weight
-    if (searchData.filters.priceRange.min && searchData.filters.priceRange.max) {
+    if (searchData.filters?.priceRange?.min && searchData.filters?.priceRange?.max) {
       score += 15;
     }
     
     // Location specificity weight
-    if (searchData.filters.nearbyFacilities.length > 0) {
-      score += 20;
+    if (searchData.filters?.nearbyFacilities && Array.isArray(searchData.filters.nearbyFacilities)) {
+      score += searchData.filters.nearbyFacilities.length * 5;
     }
 
     return score;
+  };
+
+  // Enhanced search handler with proper null checks
+  const handleSearch = () => {
+    try {
+      // Process natural language query
+      const extractedParams = processNaturalLanguageQuery(searchQuery || '');
+      
+      // Ensure filters object exists with defaults
+      const currentFilters = {
+        propertyType: [],
+        priceRange: { min: '', max: '' },
+        bedrooms: '',
+        bathrooms: '',
+        amenities: [],
+        ...filters
+      };
+
+      const searchData = {
+        query: searchQuery || '',
+        filters: {
+          ...currentFilters,
+          ...(extractedParams || {})
+        },
+        timestamp: new Date().toISOString()
+      };
+
+      // Add to recent searches if query exists
+      if (searchQuery) {
+        addToRecentSearches(searchQuery, searchData.filters);
+      }
+
+      // Calculate relevance score with null check
+      const relevanceScore = calculateRelevanceScore(searchData);
+
+      // Pass search data to parent if callback exists
+      if (typeof onSearch === 'function') {
+        onSearch({ ...searchData, relevanceScore });
+      }
+    } catch (error) {
+      console.error('Error in handleSearch:', error);
+      // Provide fallback behavior
+      if (typeof onSearch === 'function') {
+        onSearch({
+          query: searchQuery || '',
+          filters: filters || {},
+          timestamp: new Date().toISOString(),
+          relevanceScore: 0
+        });
+      }
+    }
+  };
+
+  // Filter handler with null checks
+  const handleFilter = (category, value) => {
+    if (!category) return;
+
+    setFilters(prev => {
+      const currentFilters = { ...prev };
+      
+      try {
+        if (Array.isArray(currentFilters[category])) {
+          if (!value) return currentFilters;
+          
+          currentFilters[category] = currentFilters[category].includes(value)
+            ? currentFilters[category].filter(item => item !== value)
+            : [...currentFilters[category], value];
+        } else {
+          currentFilters[category] = value;
+        }
+      } catch (error) {
+        console.error('Error in handleFilter:', error);
+        // Keep existing filters on error
+        return prev;
+      }
+
+      return currentFilters;
+    });
+  };
+
+  // Process natural language query with null checks
+  const processNaturalLanguageQuery = (query) => {
+    if (!query) return null;
+
+    const patterns = {
+      propertyType: {
+        patterns: [
+          /(\d+)\s*(?:bed(?:room)?s?|bhk)/i,
+          /(?:apartment|house|duplex|flat|studio|self\s*contain(?:ed)?|single\s*room)/i
+        ],
+        extract: (text) => {
+          if (!text) return null;
+          const bedMatch = text.match(/(\d+)\s*(?:bed(?:room)?s?|bhk)/i);
+          const typeMatch = text.match(/(?:apartment|house|duplex|flat|studio|self\s*contain(?:ed)?|single\s*room)/i);
+          if (!bedMatch && !typeMatch) return null;
+          return {
+            bedrooms: bedMatch ? bedMatch[1] : null,
+            type: typeMatch ? typeMatch[0] : null
+          };
+        }
+      },
+      location: {
+        patterns: [
+          /(?:in|near|around|close to|by)\s+([^,\.]+)/i,
+          /([^,\.]+?)(?:\s+area|\s+district|\s+neighborhood)?(?:\s+(?:in|near|around|close to|by))/i
+        ],
+        extract: (text) => {
+          if (!text) return null;
+          for (const pattern of patterns.location.patterns) {
+            const match = text.match(pattern);
+            if (match) return match[1].trim();
+          }
+          return null;
+        }
+      },
+      price: {
+        patterns: [
+          /(?:under|below|less than|up to)\s*[₦$]?(\d+(?:[,.]\d+)?[kmb]?)/i,
+          /[₦$]?(\d+(?:[,.]\d+)?[kmb]?)\s*(?:or less|maximum|max)/i,
+          /between\s*[₦$]?(\d+(?:[,.]\d+)?[kmb]?)\s*(?:and|to|-)\s*[₦$]?(\d+(?:[,.]\d+)?[kmb]?)/i,
+          /[₦$]?(\d+(?:[,.]\d+)?[kmb]?)\s*(?:to|-)\s*[₦$]?(\d+(?:[,.]\d+)?[kmb]?)/i
+        ],
+        extract: (text) => {
+          if (!text) return null;
+          for (const pattern of patterns.price.patterns) {
+            const match = text.match(pattern);
+            if (match) {
+              if (match[2]) { // Range
+                return {
+                  min: normalizePrice(match[1]),
+                  max: normalizePrice(match[2])
+                };
+              } else { // Upper limit
+                return {
+                  min: 0,
+                  max: normalizePrice(match[1])
+                };
+              }
+            }
+          }
+          return null;
+        }
+      },
+      amenities: {
+        patterns: [
+          /(?:with|has|having|include(?:s|ing)?)\s+([^,.]+)/i,
+          /(?:furnished|gated|secured|fenced|newly built|renovated|modern|spacious)/i
+        ],
+        extract: (text) => {
+          if (!text) return null;
+          const amenities = [];
+          const commonAmenities = [
+            'furnished', 'gated', 'secured', 'fenced', 'parking',
+            'water', 'power', 'security', 'kitchen', 'bathroom'
+          ];
+          
+          for (const amenity of commonAmenities) {
+            if (text.toLowerCase().includes(amenity)) {
+              amenities.push(amenity);
+            }
+          }
+          return amenities.length > 0 ? amenities : null;
+        }
+      }
+    };
+
+    // Helper function to normalize price values with null check
+    const normalizePrice = (price) => {
+      if (!price) return 0;
+      const normalized = price.toString().toLowerCase();
+      const multipliers = { 'k': 1000, 'm': 1000000, 'b': 1000000000 };
+      const number = parseFloat(normalized.replace(/[^\d.]/g, '')) || 0;
+      const multiplier = multipliers[normalized.slice(-1)] || 1;
+      return number * multiplier;
+    };
+
+    try {
+      // Process the query and extract all parameters
+      const extracted = {
+        propertyType: patterns.propertyType.extract(query),
+        location: patterns.location?.extract(query),
+        price: patterns.price?.extract(query),
+        amenities: patterns.amenities?.extract(query)
+      };
+
+      // Update filters based on extracted information
+      const newFilters = { ...filters };
+      
+      if (extracted.propertyType) {
+        if (extracted.propertyType.type) {
+          newFilters.propertyType = [extracted.propertyType.type];
+        }
+        if (extracted.propertyType.bedrooms) {
+          newFilters.bedrooms = extracted.propertyType.bedrooms;
+        }
+      }
+
+      if (extracted.price) {
+        newFilters.priceRange = extracted.price;
+      }
+
+      if (extracted.amenities) {
+        newFilters.amenities = extracted.amenities;
+      }
+
+      setFilters(newFilters);
+      return extracted;
+    } catch (error) {
+      console.error('Error processing natural language query:', error);
+      return null;
+    }
+  };
+
+  // Enhanced voice search functionality
+  const handleVoiceSearch = () => {
+    if ('webkitSpeechRecognition' in window) {
+      const recognition = new window.webkitSpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = 'en-NG';
+      
+      recognition.onstart = () => {
+        setIsListening(true);
+      };
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        setSearchQuery(transcript); // Update search input immediately
+        
+        // Process the natural language query
+        const extractedParams = processNaturalLanguageQuery(transcript);
+        console.log('Extracted parameters:', extractedParams);
+        
+        // Trigger search with extracted parameters
+        handleSearch();
+        
+        setIsListening(false);
+      };
+
+      recognition.onerror = (event) => {
+        console.error('Speech recognition error:', event.error);
+        setIsListening(false);
+      };
+
+      recognition.onend = () => {
+        setIsListening(false);
+      };
+
+      recognition.start();
+    } else {
+      alert('Voice search is not supported in your browser');
+    }
   };
 
   // Generate real-time suggestions based on input
@@ -291,87 +535,9 @@ const SearchInterface = ({
     console.log('generateSuggestions newSuggestions:', newSuggestions);
   };
   
-  // Voice search functionality
-  const handleVoiceSearch = () => {
-    if ('webkitSpeechRecognition' in window) {
-      const recognition = new window.webkitSpeechRecognition();
-      recognition.continuous = false;
-      recognition.interimResults = false;
-      recognition.lang = 'en-NG';
-      
-      recognition.onstart = () => {
-        setIsListening(true);
-      };
-
-      recognition.onresult = (event) => {
-          const transcript = event.results[0][0].transcript;
-          processVoiceCommand(transcript);
-          setIsListening(false);
-      };
-
-      const processVoiceCommand = async (transcript) => {
-        // Use LLM to interpret the voice transcript
-        const response = await fetch('/api/process-voice-command', { // Assuming you have a server endpoint
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ transcript }),
-        });
-    
-        const data = await response.json();
-        // Example data structure:
-        // {
-        //   location: "Gombe State University Area",
-        //   propertyType: "2 Bedroom Flat",
-        //   priceRange: "150k - 300k",
-        //   amenities: ["24/7 Power Supply", "Security"]
-        // }
-    
-        const { location, propertyType, priceRange, amenities } = data;
-
-        const newSearch = {
-          location,
-          propertyType,
-          priceRange,
-          amenities
-        }
-        console.log('voice command:', newSearch)
-        setSearchQuery(location);
-    
-        handleSearch(newSearch);
-      };
-
-      recognition.onerror = () => {
-        setIsListening(false);
-      };
-
-      recognition.onend = () => {
-        setIsListening(false);
-      };
-
-      recognition.start();
-    } else {
-      alert('Voice search is not supported in your browser');
-    }
-  };
-
   // Handle filter changes
   const handleFilterChange = (category, value) => {
-    setFilters(prev => {
-      if (Array.isArray(prev[category])) {
-        return {
-          ...prev,
-          [category]: prev[category].includes(value)
-            ? prev[category].filter(item => item !== value)
-            : [...prev[category], value]
-        };
-      }
-      return {
-        ...prev,
-        [category]: value
-      };
-    });
+    handleFilter(category, value);
   };
 
   // Clear all filters
@@ -777,7 +943,7 @@ const SearchInterface = ({
                   {trend.type === 'property' && <Building2 className="w-4 h-4 text-[#1c5bde]" />}
                   {trend.type === 'feature' && <Check className="w-4 h-4 text-[#1c5bde]" />}
                   {trend.type === 'category' && <Folder className="w-4 h-4 text-[#1c5bde]" />}
-                  <span className="text-sm font-medium text-gray-700 group-hover:text-[#1c5bde]">
+                  <span className="text-sm font-medium text-gray-900 group-hover:text-[#1c5bde]">
                     {trend.text}
                   </span>
                 </div>

@@ -29,6 +29,11 @@ const PropertyCard = ({
   const viewCount = Math.floor(Math.random() * 100) + 50;
   const rating = (Math.random() * (5 - 4.3) + 4.3).toFixed(1);
 
+  // Format price with commas
+  const formatPrice = (price) => {
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
   const handleImageNavigation = (direction) => {
     if (direction === 'next' && currentImageIndex < property.images.length - 1) {
       setCurrentImageIndex(prev => prev + 1);
@@ -197,9 +202,14 @@ const PropertyCard = ({
           <h3 className="font-semibold text-gray-900">
             {property.title}
           </h3>
-          <p className="whitespace-nowrap text-lg font-semibold text-blue-600">
-            ₦{property.price.toLocaleString()}
-          </p>
+          <div className="flex items-baseline gap-2">
+            <span className="text-lg font-bold text-gray-900">
+              ₦{formatPrice(property.price)}
+            </span>
+            {property.type === 'rent' && (
+              <span className="text-sm text-gray-600">/year</span>
+            )}
+          </div>
         </div>
 
         <p className="flex items-center gap-1 text-gray-500 mt-1">

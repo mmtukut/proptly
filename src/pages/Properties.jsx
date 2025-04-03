@@ -28,7 +28,8 @@ const Properties = () => {
     priceRange: { min: '', max: '' },
     bedrooms: '',
     bathrooms: '',
-    amenities: []
+    amenities: [],
+    nearbyFacilities: []
   });
 
   const categories = [
@@ -44,30 +45,87 @@ const Properties = () => {
     setActiveViewers(Math.floor(Math.random() * 20) + 30);
   }, []);
 
-  // Filter properties
+  // Initialize filters from URL params if any
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const urlFilters = {};
+    
+    // Extract filters from URL
+    if (searchParams.has('type')) {
+      urlFilters.propertyType = searchParams.get('type').split(',');
+    }
+    if (searchParams.has('minPrice')) {
+      urlFilters.priceRange = {
+        ...urlFilters.priceRange,
+        min: searchParams.get('minPrice')
+      };
+    }
+    if (searchParams.has('maxPrice')) {
+      urlFilters.priceRange = {
+        ...urlFilters.priceRange,
+        max: searchParams.get('maxPrice')
+      };
+    }
+    if (searchParams.has('beds')) {
+      urlFilters.bedrooms = searchParams.get('beds');
+    }
+    if (searchParams.has('baths')) {
+      urlFilters.bathrooms = searchParams.get('baths');
+    }
+    
+    // Only update filters if we have URL params
+    if (Object.keys(urlFilters).length > 0) {
+      setFilters(prev => ({
+        ...prev,
+        ...urlFilters
+      }));
+    }
+  }, [location.search]);
+
+  // Filter properties with null checks
   const handleFilter = (newFilters) => {
+    if (!newFilters) return;
+    
     setFilters(newFilters);
     const filtered = allProperties.filter(property => {
-      if (newFilters.propertyType.length && !newFilters.propertyType.includes(property.type)) {
-        return false;
+      // Check if property exists
+      if (!property) return false;
+
+      // Property type check
+      if (newFilters.propertyType?.length > 0) {
+        if (!property.type || !newFilters.propertyType.includes(property.type)) {
+          return false;
+        }
       }
-      if (newFilters.priceRange.min && property.price < newFilters.priceRange.min) {
-        return false;
+
+      // Price range check
+      if (newFilters.priceRange) {
+        const { min, max } = newFilters.priceRange;
+        if (min && property.price < parseFloat(min)) return false;
+        if (max && property.price > parseFloat(max)) return false;
       }
-      if (newFilters.priceRange.max && property.price > newFilters.priceRange.max) {
-        return false;
+
+      // Bedrooms check
+      if (newFilters.bedrooms && property.bedrooms) {
+        if (property.bedrooms < parseInt(newFilters.bedrooms)) return false;
       }
-      if (newFilters.bedrooms && property.bedrooms < newFilters.bedrooms) {
-        return false;
+
+      // Bathrooms check
+      if (newFilters.bathrooms && property.bathrooms) {
+        if (property.bathrooms < parseInt(newFilters.bathrooms)) return false;
       }
-      if (newFilters.bathrooms && property.bathrooms < newFilters.bathrooms) {
-        return false;
+
+      // Amenities check
+      if (newFilters.amenities?.length > 0) {
+        if (!property.amenities || !Array.isArray(property.amenities)) return false;
+        if (!newFilters.amenities.every(a => property.amenities.includes(a))) {
+          return false;
+        }
       }
-      if (newFilters.amenities.length && !newFilters.amenities.every(a => property.amenities.includes(a))) {
-        return false;
-      }
+
       return true;
     });
+
     setFilteredProperties(filtered);
     setCurrentPage(1);
   };
@@ -125,13 +183,12 @@ const Properties = () => {
           
           {/* Quick Filters */}
           <div className="mt-4 flex items-center gap-4">
-            
             {categories.map(category => (
               <button
                 key={category.id}
                 onClick={() => handleFilter({ ...filters, propertyType: [category.id] })}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
-                  filters.propertyType.includes(category.id)
+                  filters?.propertyType?.includes(category.id)
                     ? 'bg-blue-600 text-white'
                     : 'bg-white hover:bg-gray-50'
                 }`}
@@ -177,7 +234,7 @@ const Properties = () => {
         </div>
 
         {/* Property Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           {currentProperties.map(property => (
             <PropertyCard key={property.id} property={property} />
           ))}

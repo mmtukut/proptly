@@ -60,7 +60,7 @@ const ProfileMenu = () => {
                     Profile
                   </Link>
                   <Link
-                    to="/saved"
+                    to="/saved-properties"
                     className="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg"
                     onClick={() => setIsOpen(false)}
                   >
@@ -68,7 +68,7 @@ const ProfileMenu = () => {
                     Saved Properties
                   </Link>
                   <Link
-                    to="/settings"
+                    to="/profile"
                     className="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg"
                     onClick={() => setIsOpen(false)}
                   >
@@ -179,7 +179,7 @@ const Header = () => {
     {
       label: 'Saved Properties',
       icon: Heart,
-      path: '/saved'
+      path: '/saved-properties'
     },
     {
       label: 'Dashboard',
@@ -300,7 +300,7 @@ const Header = () => {
               
               {currentUser && (
                 <Link
-                  to="/saved"
+                  to="/saved-properties"
                   className="group relative p-2.5 text-gray-700 hover:bg-[#1c5bde]/5 rounded-full transition-all"
                   title="Saved Properties"
                 >

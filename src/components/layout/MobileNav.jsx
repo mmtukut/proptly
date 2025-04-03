@@ -94,7 +94,7 @@ const MobileNav = () => {
       activeIcon: () => <Map className="w-6 h-6 fill-current" />
     },
     { 
-      path: '/saved',
+      path: '/saved-properties',
       icon: Heart, 
       label: 'Saved',
       requiresAuth: true,
@@ -151,7 +151,7 @@ const MobileNav = () => {
                   <Sparkles className="h-4 w-4 text-[#1c5bde]" />
                 </div>
               </div>
-              <span className="text-sm text-gray-500">Find your perfect place...</span>
+              <span className="text-sm text-gray-500">Try "3 bedroom apartment near Federal College"</span>
             </button>
           </div>
 
@@ -215,7 +215,7 @@ const MobileNav = () => {
                       <h2 className="text-lg font-semibold">Search Properties</h2>
                     </div>
 
-                    <div className="flex-1 overflow-y-auto">
+                    <div className="flex-1 overflow-y-auto pt-2">
                       <SearchInterface
                         enhancedView={true}
                         showTrending={true}

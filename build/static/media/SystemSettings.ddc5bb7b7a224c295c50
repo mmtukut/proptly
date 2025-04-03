@@ -1,0 +1,265 @@
+import React, { useState, useEffect } from 'react';
+import systemSettingsService from '../../services/systemSettings';
+import {
+  Box,
+  Card,
+  Grid,
+  Typography,
+  TextField,
+  Button,
+  Switch,
+  FormControlLabel,
+  Divider,
+  Alert,
+  CircularProgress
+} from '@mui/material';
+import { Settings, Save } from '@mui/icons-material';
+
+const SystemSettings = () => {
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(null);
+  const [settings, setSettings] = useState({
+    general: {
+      siteName: '',
+      supportEmail: '',
+      maxFileSize: 5,
+      enableRegistration: true
+    },
+    property: {
+      maxImagesPerProperty: 10,
+      enableAutoVerification: false,
+      requireLocationVerification: true,
+      maxPriceLimit: 1000000000
+    },
+    notifications: {
+      enableEmailNotifications: true,
+      enablePushNotifications: true,
+      adminEmailRecipients: ''
+    }
+  });
+
+  useEffect(() => {
+    loadSettings();
+  }, []);
+
+  const loadSettings = async () => {
+    try {
+      setLoading(true);
+      const response = await systemSettingsService.getSystemSettings();
+      if (response) {
+        setSettings(response);
+      }
+      setLoading(false);
+    } catch (err) {
+      setError('Failed to load settings');
+      setLoading(false);
+    }
+  };
+
+  const handleSave = async () => {
+    try {
+      setSaving(true);
+      setError(null);
+      
+      await systemSettingsService.updateSystemSettings(settings);
+      
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 3000);
+    } catch (err) {
+      setError('Failed to save settings');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleChange = (section, field) => (event) => {
+    const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
+    setSettings(prev => ({
+      ...prev,
+      [section]: {
+        ...prev[section],
+        [field]: value
+      }
+    }));
+  };
+
+  if (loading) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  return (
+    <Box p={3}>
+      <Box display="flex" alignItems="center" mb={3}>
+        <Settings sx={{ mr: 2 }} />
+        <Typography variant="h5">System Settings</Typography>
+      </Box>
+
+      {error && (
+        <Alert severity="error" sx={{ mb: 3 }}>{error}</Alert>
+      )}
+      
+      {success && (
+        <Alert severity="success" sx={{ mb: 3 }}>Settings saved successfully!</Alert>
+      )}
+
+      <Grid container spacing={3}>
+        {/* General Settings */}
+        <Grid item xs={12}>
+          <Card sx={{ p: 3 }}>
+            <Typography variant="h6" gutterBottom>General Settings</Typography>
+            <Divider sx={{ mb: 2 }} />
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  label="Site Name"
+                  value={settings.general.siteName}
+                  onChange={handleChange('general', 'siteName')}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  label="Support Email"
+                  value={settings.general.supportEmail}
+                  onChange={handleChange('general', 'supportEmail')}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  type="number"
+                  label="Max File Size (MB)"
+                  value={settings.general.maxFileSize}
+                  onChange={handleChange('general', 'maxFileSize')}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={settings.general.enableRegistration}
+                      onChange={handleChange('general', 'enableRegistration')}
+                    />
+                  }
+                  label="Enable User Registration"
+                />
+              </Grid>
+            </Grid>
+          </Card>
+        </Grid>
+
+        {/* Property Settings */}
+        <Grid item xs={12}>
+          <Card sx={{ p: 3 }}>
+            <Typography variant="h6" gutterBottom>Property Settings</Typography>
+            <Divider sx={{ mb: 2 }} />
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  type="number"
+                  label="Max Images Per Property"
+                  value={settings.property.maxImagesPerProperty}
+                  onChange={handleChange('property', 'maxImagesPerProperty')}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  type="number"
+                  label="Max Price Limit"
+                  value={settings.property.maxPriceLimit}
+                  onChange={handleChange('property', 'maxPriceLimit')}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={settings.property.enableAutoVerification}
+                      onChange={handleChange('property', 'enableAutoVerification')}
+                    />
+                  }
+                  label="Enable Auto Verification"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={settings.property.requireLocationVerification}
+                      onChange={handleChange('property', 'requireLocationVerification')}
+                    />
+                  }
+                  label="Require Location Verification"
+                />
+              </Grid>
+            </Grid>
+          </Card>
+        </Grid>
+
+        {/* Notification Settings */}
+        <Grid item xs={12}>
+          <Card sx={{ p: 3 }}>
+            <Typography variant="h6" gutterBottom>Notification Settings</Typography>
+            <Divider sx={{ mb: 2 }} />
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="Admin Email Recipients"
+                  helperText="Comma-separated list of email addresses"
+                  value={settings.notifications.adminEmailRecipients}
+                  onChange={handleChange('notifications', 'adminEmailRecipients')}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={settings.notifications.enableEmailNotifications}
+                      onChange={handleChange('notifications', 'enableEmailNotifications')}
+                    />
+                  }
+                  label="Enable Email Notifications"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={settings.notifications.enablePushNotifications}
+                      onChange={handleChange('notifications', 'enablePushNotifications')}
+                    />
+                  }
+                  label="Enable Push Notifications"
+                />
+              </Grid>
+            </Grid>
+          </Card>
+        </Grid>
+      </Grid>
+
+      <Box mt={3} display="flex" justifyContent="flex-end">
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<Save />}
+          onClick={handleSave}
+          disabled={saving}
+        >
+          {saving ? 'Saving...' : 'Save Settings'}
+        </Button>
+      </Box>
+    </Box>
+  );
+};
+
+export default SystemSettings;

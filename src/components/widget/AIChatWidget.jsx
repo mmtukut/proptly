@@ -287,9 +287,9 @@ What would you like to know?`,
   if (!isOpen) {
     return (
       <motion.div
-        initial={{ scale: 0.8, opacity: 0 }}
+        initial={{ scale: 0.8, opacity: 0 }}  
         animate={{ scale: 1, opacity: 1 }}
-        className="fixed bottom-4 right-4 flex flex-col items-end gap-2"
+        className="fixed bottom-4 right-4 flex flex-col items-end gap-2 z-10"
       >
         <motion.button
           whileHover={{ scale: 1.05 }}
@@ -311,7 +311,7 @@ What would you like to know?`,
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 20 }}
       className={`fixed ${isMinimized ? 'bottom-4 right-4 w-auto h-auto' : 'bottom-4 right-4 w-96 h-[600px]'} 
-                 bg-white rounded-lg shadow-xl flex flex-col transition-all duration-300`}
+                 bg-white rounded-lg shadow-xl flex flex-col transition-all duration-300 z-50`}
     >
       {/* Header */}
       <div className="p-4 bg-blue-500 text-white rounded-t-lg flex items-center justify-between">

@@ -32,10 +32,10 @@ import MobileNav from './components/layout/MobileNav';
 import SavedProperties from './components/property/SavedProperties';
 import VerifyEmail from './components/auth/VerifyEmail';
 import Profile from './components/profile/Profile';
+import SystemSettings from './components/admin/SystemSettings';
 
 // Admin Components
 import VerificationDashboard from './components/admin/VerificationDashboard';
-import SystemSettings from './components/admin/SystemSettings';
 import AuditLogs from './components/admin/AuditLogs';
 import UserManagementDashboard from './components/admin/UserManagementDashboard';
 
@@ -104,6 +104,14 @@ function AppContent() {
                         </MapLayout>
                     }
                 />
+                <Route
+                    path="/saved-properties"
+                    element={
+                        <PrivateRoute>
+                            <SavedProperties />
+                        </PrivateRoute>
+                    }
+                />         
 
                 {/* Agent Routes */}
                 <Route path="/agents" element={<AgentsPage />}>

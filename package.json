@@ -37,7 +37,7 @@
     "dotenv": "^16.4.7",
     "env-cmd": "^10.1.0",
     "express": "^4.21.2",
-    "firebase": "^11.2.0",
+    "firebase": "^11.6.0",
     "framer-motion": "^12.6.2",
     "gh-pages": "6.2.0",
     "leaflet": "^1.9.4",

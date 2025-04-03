@@ -129,7 +129,7 @@ const HomePage = () => {
                 <p className="text-gray-600">Continue your property search</p>
               </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
               {recentlyViewed.map(property => (
                 <PropertyCard key={property.id} property={property} />
               ))}

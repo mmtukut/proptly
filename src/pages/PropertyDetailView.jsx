@@ -6,7 +6,8 @@ import {
   ChevronRight, User, Zap, Droplet, Wind, Thermometer, 
   Signal, Road, Shield, Tree, ShoppingCart, Bus, Wifi, Tv, 
   Mountain, Utensils, Car, X, Check, Home, FileText, Coffee,
-  TrendingUp, Users, Clock, Eye, Calendar, Phone, MessageSquare, Brain, ChevronUp, ChevronDown, MessageSquareText
+  TrendingUp, Users, Clock, Eye, Calendar, Phone, MessageSquare, Brain, ChevronUp, ChevronDown, MessageSquareText,
+  Maximize2, Image
 } from 'lucide-react';
 import { properties, filterProperties } from '../data/properties.data';
 import { infrastructureData } from '../data/infrastructure';
@@ -25,6 +26,7 @@ const PropertyDetailView = () => {
   const [property, setProperty] = useState(null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [is360View, setIs360View] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [activeSection, setActiveSection] = useState('overview');
   const [isLiked, setIsLiked] = useState(false);
   const [showGallery, setShowGallery] = useState(false);
@@ -116,7 +118,7 @@ const PropertyDetailView = () => {
     <div className="fixed bottom-0 left-0 right-0 bg-white shadow-lg border-t p-4 z-50">
       <div className="container mx-auto flex justify-between items-center gap-4">
         <div className="flex-1">
-          <p className="text-2xl font-bold text-gray-900">₦{property?.price?.toLocaleString()}</p>
+          <p className="text-2xl font-bold text-gray-900">₦{formatPrice(property?.price)}</p>
         </div>
         <div className="flex gap-3">
           <button
@@ -167,7 +169,7 @@ const PropertyDetailView = () => {
               />
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
                 <p className="text-white font-semibold">{prop.title}</p>
-                <p className="text-white/90">₦{prop.price.toLocaleString()}</p>
+                <p className="text-white/90">₦{formatPrice(prop.price)}</p>
               </div>
             </div>
           </Link>
@@ -177,7 +179,7 @@ const PropertyDetailView = () => {
   );
 
   const handleImageNavigation = useCallback((direction) => {
-    setActiveImageIndex((prev) => {
+    setCurrentImageIndex((prev) => {
       if (direction === 'next') {
         return prev === property.images.length - 1 ? 0 : prev + 1;
       }
@@ -245,6 +247,11 @@ const PropertyDetailView = () => {
 
   const allQuestions = [...commonQuestions, ...propertySpecificQuestions];
 
+  // Format price with commas
+  const formatPrice = (price) => {
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
   if (!property) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -283,29 +290,29 @@ const PropertyDetailView = () => {
             
             {/* Image Navigation */}
             <div className="absolute inset-x-0 top-1/2 transform -translate-y-1/2 flex justify-between px-4">
-              <button
+                  <button 
                 onClick={() => handleImageNavigation('prev')}
                 className="bg-white/90 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-gray-50 transition-all"
-              >
+                  >
                 <ChevronLeft className="h-6 w-6" />
-              </button>
-              <button
+                  </button>
+                  <button 
                 onClick={() => handleImageNavigation('next')}
                 className="bg-white/90 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-gray-50 transition-all"
-              >
+                  >
                 <ChevronRight className="h-6 w-6" />
-              </button>
+                  </button>
             </div>
 
             {/* Quick Actions Overlay */}
             <div className="absolute top-4 right-4 flex space-x-3">
-              <button 
+              <button
                 onClick={() => setIs360View(!is360View)}
                 className="bg-white/90 backdrop-blur-sm px-4 py-2 rounded-lg shadow-lg text-sm font-medium hover:bg-gray-50 transition-all"
               >
                 {is360View ? 'View Photos' : '360° Tour'}
               </button>
-              <button 
+              <button
                 onClick={handleShare}
                 className="bg-white/90 backdrop-blur-sm p-2 rounded-lg shadow-lg hover:bg-gray-50 transition-all"
               >
@@ -625,7 +632,7 @@ const PropertyDetailView = () => {
       </AnimatePresence>
 
       {/* Quick Action Bar */}
-      <div className={`fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg transition-transform duration-300
+      <div className={`fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg transition-transform duration-300 z-50
         ${showAIChat ? 'transform translate-x-0 md:translate-x-[400px] lg:translate-x-[450px]' : ''}`}>
         <QuickActions />
       </div>
