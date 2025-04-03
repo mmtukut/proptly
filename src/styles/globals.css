@@ -1,0 +1,318 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Base font settings */
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "ss01", "ss02", "cv01", "cv02";
+  }
+
+  /* Typography scale */
+  .text-display-1 {
+    @apply font-bold text-4xl md:text-5xl lg:text-6xl tracking-tight;
+  }
+
+  .text-display-2 {
+    @apply font-bold text-3xl md:text-4xl lg:text-5xl tracking-tight;
+  }
+
+  .text-heading-1 {
+    @apply font-semibold text-2xl md:text-3xl tracking-tight;
+  }
+
+  .text-heading-2 {
+    @apply font-semibold text-xl md:text-2xl tracking-tight;
+  }
+
+  .text-subtitle {
+    @apply font-medium text-lg leading-relaxed;
+  }
+
+  .text-body {
+    @apply font-normal text-base leading-relaxed;
+  }
+
+  .text-caption {
+    @apply font-medium text-sm leading-normal;
+  }
+
+  /* Price display */
+  .text-price {
+    @apply font-semibold tracking-tight;
+  }
+}
+
+.price-marker span {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  color: #0066cc;
+  background-color: #ffffff;
+  padding: 4px 8px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.property-marker {
+  transform: translate(-50%, -50%);
+}
+
+.property-marker .price-tag {
+  transform: scale(1);
+  transition: transform 0.2s;
+}
+
+.property-marker:hover .price-tag {
+  transform: scale(1.1);
+}
+
+.mapboxgl-popup {
+  max-width: 320px !important;
+}
+
+.mapboxgl-popup-content {
+  padding: 0 !important;
+  border-radius: 16px !important;
+  overflow: hidden;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+}
+
+.price-tag-container {
+  transform: translate(-50%, -50%);
+}
+
+.price-tag {
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.2s ease;
+}
+
+.price-main {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.price-details {
+  font-size: 11px;
+  opacity: 0.8;
+  white-space: nowrap;
+}
+
+.investment-badge {
+  margin-top: 4px;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.hot-investment {
+  background: linear-gradient(45deg, #ff4d4d, #ff8c00);
+  color: white;
+}
+
+.good-investment {
+  background: linear-gradient(45deg, #00b894, #00cec9);
+  color: white;
+}
+
+.normal-investment {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.verified-badge {
+  color: #00b894;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.price-tag:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.property-popup {
+  transition: transform 0.2s ease;
+}
+
+.property-popup:hover {
+  transform: translateY(-2px);
+}
+
+.mapboxgl-popup-content {
+  cursor: pointer;
+}
+
+.mapboxgl-popup-content:hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 
+              0 10px 10px -5px rgba(0, 0, 0, 0.08) !important;
+}
+
+.cluster-marker-small,
+.cluster-marker-medium,
+.cluster-marker-large {
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  border-radius: 50%;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.cluster-marker-small {
+  width: 50px;
+  height: 50px;
+}
+
+.cluster-marker-medium {
+  width: 60px;
+  height: 60px;
+}
+
+.cluster-marker-large {
+  width: 70px;
+  height: 70px;
+}
+
+.cluster-count {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.cluster-price {
+  font-size: 10px;
+  opacity: 0.8;
+}
+
+.cluster-marker-small:hover,
+.cluster-marker-medium:hover,
+.cluster-marker-large:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* Add heat gradient for clusters based on count */
+.cluster-marker-small { background: linear-gradient(45deg, #2c3e50, #3498db); }
+.cluster-marker-medium { background: linear-gradient(45deg, #e67e22, #f1c40f); }
+.cluster-marker-large { background: linear-gradient(45deg, #e74c3c, #c0392b); }
+
+/* Enhanced property markers */
+.hot-property {
+  background: linear-gradient(45deg, #ff4d4d, #ff8c00);
+}
+
+.good-property {
+  background: linear-gradient(45deg, #00b894, #00cec9);
+}
+
+.normal-property {
+  background: rgba(0, 0, 0, 0.85);
+}
+
+.mapboxgl-canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.detection-marker {
+  cursor: pointer;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.user-location-marker {
+  width: 20px;
+  height: 20px;
+  background-color: #4dabf7;
+  border: 3px solid white;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px rgba(77, 171, 247, 0.3);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(77, 171, 247, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(77, 171, 247, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(77, 171, 247, 0);
+  }
+}
+
+.marker {
+  background-size: cover;
+  background-position: center;
+}
+
+.cluster-marker {
+  background: #fff;
+  border: 2px solid #4a90e2;
+  border-radius: 50%;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Custom styles for property cards */
+.property-card-title {
+  @apply font-semibold text-lg tracking-tight leading-snug;
+}
+
+.property-card-price {
+  @apply font-semibold text-lg tracking-tight;
+}
+
+.property-card-location {
+  @apply font-medium text-sm text-gray-600;
+}
+
+/* Map marker styles */
+.price-marker {
+  @apply font-medium text-sm;
+}
+
+/* Custom popup styles */
+.mapboxgl-popup-content {
+  @apply font-medium;
+  padding: 1rem !important;
+  border-radius: 1rem !important;
+}

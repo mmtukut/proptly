@@ -1,0 +1,270 @@
+@import 'leaflet/dist/leaflet.css';
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+ 
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 47.4% 11.2%;
+ 
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+ 
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 47.4% 11.2%;
+ 
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+ 
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 47.4% 11.2%;
+ 
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+ 
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+ 
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+ 
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 210 40% 98%;
+ 
+    --ring: 215 20.2% 65.1%;
+ 
+    --radius: 0.5rem;
+  }
+ 
+  .dark {
+    --background: 224 71.4% 4.1%;
+    --foreground: 210 40% 98%;
+ 
+    --muted: 223 47.1% 11.2%;
+    --muted-foreground: 215.4 16.3% 56.9%;
+ 
+    --accent: 216 34.1% 17.2%;
+    --accent-foreground: 210 40% 98%;
+ 
+    --popover: 224 71.4% 4.1%;
+    --popover-foreground: 210 40% 98%;
+ 
+    --border: 216 34.1% 17.2%;
+    --input: 216 34.1% 17.2%;
+ 
+    --card: 224 71.4% 4.1%;
+    --card-foreground: 210 40% 98%;
+ 
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+ 
+    --secondary: 222.2 47.4% 11.2%;
+    --secondary-foreground: 210 40% 98%;
+ 
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+ 
+    --ring: 216 34.1% 17.2%;
+  }
+
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 500;
+  }
+}
+ 
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+.select-group {
+  padding: 8px 0;
+  border-top: 1px solid #e0e0e0;
+}
+
+.select-label {
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: #333;
+  padding: 4px 12px;
+}
+
+.custom-marker {
+  background-color: white;
+  border-radius: 50%;
+  padding: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+
+.custom-marker:hover {
+  transform: scale(1.1);
+}
+
+.mapboxgl-popup-content {
+  padding: 0;
+  border-radius: 8px;
+}
+
+/* Default styles */
+html {
+  font-size: 100%;
+}
+
+/* Mobile devices */
+@media screen and (max-width: 768px) {
+  html {
+    font-size: 85%; /* This will scale all rem-based sizes to 85% */
+  }
+}
+
+/* Specific device adjustments */
+@media screen and (max-width: 390px) {
+  /* iPhone sizes */
+  html {
+    font-size: 85%;
+    -webkit-text-size-adjust: 85%;
+  }
+}
+
+/* Safari-specific adjustments */
+@supports (-webkit-touch-callout: none) {
+  html {
+    font-size: 85%;
+    -webkit-text-size-adjust: 85%;
+  }
+}
+
+@layer components {
+  .nav-link {
+    @apply text-gray-600 hover:text-[#1c5bde] transition-colors;
+  }
+
+  .action-button {
+    @apply p-2 rounded-full hover:bg-gray-100 text-gray-600 hover:text-[#1c5bde] transition-colors;
+  }
+
+  .mobile-nav-link {
+    @apply flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-[#1c5bde] transition-colors;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  html {
+    font-size: 14px;
+  }
+
+  .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+/* Touch optimizations */
+@media (hover: none) {
+  .hover-only {
+    display: none;
+  }
+}
+
+/* Safe area insets for modern mobile browsers */
+.safe-padding {
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-top: env(safe-area-inset-top);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* Hide scrollbar for property types */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Map marker animations */
+.property-marker {
+  cursor: pointer;
+  transition: transform 0.2s, filter 0.2s;
+}
+
+.property-marker:hover {
+  transform: scale(1.1);
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
+}
+
+/* Custom map controls */
+.mapboxgl-ctrl-group {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.mapboxgl-ctrl-group button {
+  border: none !important;
+  background: white !important;
+  margin: 4px !important;
+  border-radius: 8px !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Map popup customization */
+.mapboxgl-popup-content {
+  padding: 0 !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+.mapboxgl-popup-close-button {
+  padding: 4px !important;
+  margin: 4px !important;
+  border-radius: 50% !important;
+  background: white !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}

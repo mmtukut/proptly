@@ -1,0 +1,567 @@
+[
+  {
+    "query": "Find properties in Gombe under ₦5M",
+    "intent": "property_search",
+    "entities": {
+      "location": "Gombe",
+      "price_range": "under ₦5M"
+    }
+  },
+  {
+    "query": "Show luxury homes in Gombe GRA",
+    "intent": "property_search",
+    "entities": {
+      "location": "Gombe GRA",
+      "property_type": "luxury homes"
+    }
+  },
+  {
+    "query": "What's the infrastructure like near Federal College?",
+    "intent": "infrastructure_query",
+    "entities": {
+      "location": "Federal College"
+    }
+  },
+  {
+    "query": "Properties near Gombe State University",
+     "intent": "property_search",
+    "entities": {
+      "location": "Gombe State University"
+    }
+  },
+  {
+    "query": "Commercial spaces in Gombe CBD",
+    "intent": "property_search",
+    "entities": {
+      "location": "Gombe CBD",
+       "property_type": "commercial spaces"
+    }
+  },
+  {
+    "query": "3 bedroom apartments in Tumfure",
+    "intent": "property_search",
+    "entities": {
+      "location": "Tumfure",
+      "property_type": "3 bedroom apartments"
+    }
+  },
+  {
+    "query": "What are the available amenities?",
+    "intent": "amenities_query"
+  },
+   {
+    "query": "Tell me about the available properties",
+    "intent": "property_query"
+  },
+  {
+    "query": "What is the price range of properties in Gombe?",
+    "intent": "price_query",
+    "entities": {
+      "location": "Gombe"
+    }
+  },
+  {
+    "query": "Look for houses in Gombe.",
+    "intent": "property_search",
+    "entities": {
+      "location": "Gombe",
+      "property_type": "houses"
+    }
+  },
+  {
+    "query": "I need a property in Gombe.",
+    "intent": "property_search",
+    "entities": {
+      "location": "Gombe"
+    }
+  },
+  {
+    "query": "Find me a place to live in Gombe.",
+    "intent": "property_search",
+    "entities": {
+      "location": "Gombe"
+    }
+  },
+  {
+    "query": "Show me apartments in Gombe.",
+    "intent": "property_search",
+    "entities": {
+      "location": "Gombe",
+      "property_type": "apartments"
+    }
+  },
+  {
+    "query": "Are there any properties available in Gombe?",
+    "intent": "property_search",
+    "entities": {
+      "location": "Gombe"
+    }
+  },
+  {
+    "query": "What are the options for housing in Gombe?",
+    "intent": "property_search",
+    "entities": {
+      "location": "Gombe"
+    }
+  },
+  {
+    "query": "Search for real estate in Gombe.",
+    "intent": "property_search",
+    "entities": {
+      "location": "Gombe"
+    }
+  },
+  {
+    "query": "I'm looking for a home in Gombe.",
+    "intent": "property_search",
+    "entities": {
+      "location": "Gombe"
+    }
+  },
+  {
+    "query": "Any properties for sale in Gombe?",
+    "intent": "property_search",
+    "entities": {
+      "location": "Gombe"
+    }
+  },
+  {
+    "query": "What's available in Gombe?",
+    "intent": "property_search",
+    "entities": {
+      "location": "Gombe"
+    }
+  },
+  {
+    "query": "Find properties in Gombe below 5 million naira",
+    "intent": "property_search",
+    "entities": {
+      "location": "Gombe",
+      "price_range": "below 5 million naira"
+    }
+  },
+  {
+    "query": "Show me properties in Gombe that cost less than 5 million",
+    "intent": "property_search",
+    "entities": {
+      "location": "Gombe",
+      "price_range": "less than 5 million"
+    }
+  },
+  {
+    "query": "I want to see properties in Gombe under ₦5,000,000",
+    "intent": "property_search",
+    "entities": {
+      "location": "Gombe",
+      "price_range": "under ₦5,000,000"
+    }
+  },
+  {
+    "query": "Display properties in Gombe with a maximum price of ₦5M",
+    "intent": "property_search",
+    "entities": {
+      "location": "Gombe",
+      "price_range": "maximum price of ₦5M"
+    }
+  },
+  {
+    "query": "Locate properties in Gombe for less than ₦5 million",
+    "intent": "property_search",
+    "entities": {
+      "location": "Gombe",
+      "price_range": "less than ₦5 million"
+    }
+  },
+  {
+    "query": "Show me luxury houses in Gombe GRA",
+    "intent": "property_search",
+    "entities": {
+      "location": "Gombe GRA",
+      "property_type": "luxury houses"
+    }
+  },
+  {
+    "query": "I want to see high-end homes in Gombe GRA",
+    "intent": "property_search",
+    "entities": {
+      "location": "Gombe GRA",
+      "property_type": "high-end homes"
+    }
+  },
+  {
+    "query": "Find me upscale properties in Gombe GRA",
+    "intent": "property_search",
+    "entities": {
+      "location": "Gombe GRA",
+      "property_type": "upscale properties"
+    }
+  },
+  {
+    "query": "Display premium homes in Gombe GRA",
+    "intent": "property_search",
+    "entities": {
+      "location": "Gombe GRA",
+      "property_type": "premium homes"
+    }
+  },
+  {
+    "query": "Locate luxurious houses in Gombe GRA",
+    "intent": "property_search",
+    "entities": {
+      "location": "Gombe GRA",
+      "property_type": "luxurious houses"
+    }
+  },
+    {
+    "query": "Show me commercial properties in Gombe CBD",
+    "intent": "property_search",
+    "entities": {
+      "location": "Gombe CBD",
+      "property_type": "commercial properties"
+    }
+  },
+  {
+    "query": "I need to find a commercial space in Gombe CBD",
+    "intent": "property_search",
+    "entities": {
+      "location": "Gombe CBD",
+      "property_type": "commercial space"
+    }
+  },
+  {
+    "query": "Find me a business location in Gombe CBD",
+    "intent": "property_search",
+    "entities": {
+      "location": "Gombe CBD",
+      "property_type": "business location"
+    }
+  },
+  {
+    "query": "Display commercial real estate in Gombe CBD",
+    "intent": "property_search",
+    "entities": {
+      "location": "Gombe CBD",
+      "property_type": "commercial real estate"
+    }
+  },
+  {
+    "query": "Locate commercial buildings in Gombe CBD",
+    "intent": "property_search",
+    "entities": {
+      "location": "Gombe CBD",
+      "property_type": "commercial buildings"
+    }
+  },
+  {
+    "query": "Show me 3 bedroom flats in Tumfure",
+    "intent": "property_search",
+    "entities": {
+      "location": "Tumfure",
+      "property_type": "3 bedroom flats"
+    }
+  },
+  {
+    "query": "I'm looking for a 3 bedroom apartment in Tumfure",
+    "intent": "property_search",
+    "entities": {
+      "location": "Tumfure",
+      "property_type": "3 bedroom apartment"
+    }
+  },
+  {
+    "query": "Find me a 3 bedroom flat in Tumfure",
+    "intent": "property_search",
+    "entities": {
+      "location": "Tumfure",
+      "property_type": "3 bedroom flat"
+    }
+  },
+  {
+    "query": "Display 3 bedroom apartments in Tumfure",
+    "intent": "property_search",
+    "entities": {
+      "location": "Tumfure",
+      "property_type": "3 bedroom apartments"
+    }
+  },
+  {
+    "query": "Locate 3 bedroom flats in Tumfure",
+    "intent": "property_search",
+    "entities": {
+      "location": "Tumfure",
+      "property_type": "3 bedroom flats"
+    }
+  },
+  {
+    "query": "Find properties near Gombe State University",
+    "intent": "property_search",
+    "entities": {
+      "location": "Gombe State University"
+    }
+  },
+  {
+    "query": "Show me houses close to Gombe State University",
+    "intent": "property_search",
+    "entities": {
+      "location": "Gombe State University",
+      "property_type": "houses"
+    }
+  },
+  {
+    "query": "I need a property near Gombe State University",
+    "intent": "property_search",
+    "entities": {
+      "location": "Gombe State University"
+    }
+  },
+  {
+    "query": "Display real estate around Gombe State University",
+    "intent": "property_search",
+    "entities": {
+      "location": "Gombe State University",
+      "property_type": "real estate"
+    }
+  },
+  {
+    "query": "Locate properties in the vicinity of Gombe State University",
+    "intent": "property_search",
+    "entities": {
+      "location": "Gombe State University"
+    }
+  },
+  {
+    "query": "Tell me about the infrastructure around Federal College.",
+    "intent": "infrastructure_query",
+    "entities": {
+      "location": "Federal College"
+    }
+  },
+  {
+    "query": "What facilities are near Federal College?",
+    "intent": "infrastructure_query",
+    "entities": {
+      "location": "Federal College"
+    }
+  },
+  {
+    "query": "Are there any schools or hospitals near Federal College?",
+    "intent": "infrastructure_query",
+    "entities": {
+      "location": "Federal College"
+    }
+  },
+  {
+    "query": "What's the area like around Federal College?",
+    "intent": "infrastructure_query",
+    "entities": {
+      "location": "Federal College"
+    }
+  },
+  {
+    "query": "What kind of infrastructure is available near Federal College?",
+    "intent": "infrastructure_query",
+    "entities": {
+      "location": "Federal College"
+    }
+  },
+  {
+    "query": "What is the infrastructure like around Federal College?",
+    "intent": "infrastructure_query",
+    "entities": {
+      "location": "Federal College"
+    }
+  },
+  {
+    "query": "What amenities are available?",
+    "intent": "amenities_query"
+  },
+  {
+    "query": "Tell me about the facilities.",
+    "intent": "amenities_query"
+  },
+  {
+    "query": "What features do the properties have?",
+    "intent": "amenities_query"
+  },
+  {
+    "query": "What are the property amenities?",
+    "intent": "amenities_query"
+  },
+  {
+    "query": "What kind of amenities are offered?",
+    "intent": "amenities_query"
+  },
+  {
+    "query": "What properties are available?",
+    "intent": "property_query"
+  },
+  {
+    "query": "Tell me about the properties.",
+    "intent": "property_query"
+  },
+  {
+    "query": "What kind of properties are there?",
+    "intent": "property_query"
+  },
+  {
+    "query": "What are the available real estate options?",
+    "intent": "property_query"
+  },
+  {
+    "query": "What properties can I choose from?",
+    "intent": "property_query"
+  },
+  {
+    "query": "What is the price range for properties in Gombe?",
+    "intent": "price_query",
+    "entities": {
+      "location": "Gombe"
+    }
+  },
+  {
+    "query": "How much do properties cost in Gombe?",
+    "intent": "price_query",
+    "entities": {
+      "location": "Gombe"
+    }
+  },
+  {
+    "query": "What's the average price of properties in Gombe?",
+    "intent": "price_query",
+    "entities": {
+      "location": "Gombe"
+    }
+  },
+  {
+    "query": "What are the price ranges for real estate in Gombe?",
+    "intent": "price_query",
+    "entities": {
+      "location": "Gombe"
+    }
+  },
+  {
+    "query": "What is the cost of properties in Gombe?",
+    "intent": "price_query",
+    "entities": {
+      "location": "Gombe"
+    }
+  },
+  {
+    "query": "I want a house with a swimming pool.",
+    "intent": "property_search",
+    "entities": {
+      "amenities": "swimming pool"
+    }
+  },
+  {
+    "query": "Are there any pet-friendly apartments?",
+    "intent": "property_search",
+    "entities": {
+      "amenities": "pet-friendly"
+    }
+  },
+  {
+    "query": "I need a property with parking.",
+     "intent": "property_search",
+    "entities": {
+      "amenities": "parking"
+    }
+  },
+  {
+    "query": "Show me properties with security.",
+     "intent": "property_search",
+    "entities": {
+      "amenities": "security"
+    }
+  },
+  {
+    "query": "What are the transport options near the properties?",
+    "intent": "infrastructure_query",
+    "entities": {
+      "infrastructure": "transport"
+    }
+  },
+  {
+    "query": "I want a property with a garden.",
+     "intent": "property_search",
+    "entities": {
+      "amenities": "garden"
+    }
+  },
+  {
+    "query": "Are there any properties with a balcony?",
+     "intent": "property_search",
+    "entities": {
+      "amenities": "balcony"
+    }
+  },
+  {
+    "query": "I need a property with a good view.",
+     "intent": "property_search",
+    "entities": {
+      "amenities": "good view"
+    }
+  },
+  {
+    "query": "What are the nearby shopping centers?",
+    "intent": "infrastructure_query",
+    "entities": {
+      "infrastructure": "shopping centers"
+    }
+  },
+  {
+    "query": "Are there any restaurants nearby?",
+    "intent": "infrastructure_query",
+    "entities": {
+      "infrastructure": "restaurants"
+    }
+  },
+  {
+    "query": "Find properties in Gombe",
+    "intent": "find_properties_location"
+  },
+  {
+    "query": "Show me properties in Gombe",
+    "intent": "find_properties_location"
+  },
+  {
+    "query": "List properties in Gombe",
+    "intent": "find_properties_location"
+  },
+  {
+    "query": "I want to see properties in Gombe",
+    "intent": "find_properties_location"
+  },
+  {
+    "query": "What properties are available in Gombe?",
+    "intent": "find_properties_location"
+  },
+  {
+    "query": "Find properties under ₦5M",
+    "intent": "find_properties_price"
+  },
+  {
+    "query": "Show me properties less than ₦5 million",
+    "intent": "find_properties_price"
+  },
+  {
+    "query": "List properties below ₦5,000,000",
+    "intent": "find_properties_price"
+  },
+  {
+    "query": "I want to see properties for no more than ₦5M",
+    "intent": "find_properties_price"
+  },
+  {
+    "query": "What properties can I afford with ₦5M?",
+    "intent": "find_properties_price"
+  },
+  {
+    "query": "Find properties in Gombe under ₦5M",
+    "intent": "find_properties_location_price"
+  },
+  {
+    "query": "Show me properties in Gombe less than ₦5 million",
+    "intent": "find_properties_location_price"
+  }
+] 
