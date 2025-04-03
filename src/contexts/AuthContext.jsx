@@ -275,8 +275,7 @@ export function AuthProvider({ children }) {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: window.location.origin
-        }
+          redirectTo: process.env.REACT_APP_REDIRECT_URL,        }
       });
 
       if (error) throw error;
